@@ -1,0 +1,70 @@
+function email93ListObs1() {
+
+  var Pending93Sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Pending JC 93's");
+  var StaffList = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Staff Roster");
+
+  var clientList93 = Pending93Sheet.getRange('A2:A500').getValues();
+  var area = Pending93Sheet.getRange('B2:B500').getValues();
+  var obs1Complete = Pending93Sheet.getRange('F2:F500').getValues();
+  var obs2Complete = Pending93Sheet.getRange('G2:G500').getValues();
+  var StGeorgeAD = StaffList.getRange('H3').getValues();
+  var OremAD = StaffList.getRange('H2').getValues();
+  var SpanishForkAD = StaffList.getRange('H4').getValues();
+  var StGeorgeADEmail = StaffList.getRange('I3').getValues();
+  var OremADEmail = StaffList.getRange('I2').getValues();
+  var SpanishForkADEmail = StaffList.getRange('I4').getValues();
+  var ADsup = StaffList.getRange('H6').getValues();
+  var ADsupEmail = StaffList.getRange('I6').getValues();
+
+  // Loop through the data and send email for clients in St. George area with obs1Complete set to false and is individually emailed on the 15th of each month.
+  for (var i = 0; i < clientList93.length; i++) {
+    if (area[i][0] === "St. George" && obs1Complete[i][0] === false) {
+
+      // Email template to recipients
+      var message = {
+        to: "admin@alliessupportedemployment.com" + "," + StGeorgeADEmail + "," + ADsupEmail, 
+        subject: "Pending 93 for " + clientList93[i][0],
+        body: "Hello "+ StGeorgeAD + " & " + ADsup + "," + "\n\nThis is an email reminder that it is the 15th of the month and " + clientList93[i][0] +" still has observation 1 for their 93 pending.\n\nPlease complete as soon as possible. ",
+        name: "ASE Management Team",
+        // attachments: [SpreadsheetApp.getActiveSpreadsheet().getAs(MimeType.PDF).setName("Monthly Form 93 Dashboard Overview " + ClientName + Month + "-" + Day + "-" + Year + ".pdf")],
+      };
+
+      MailApp.sendEmail(message);
+    }
+  }
+
+  // Loop through the data and send email for clients in Orem area with obs1Complete set to false
+  for (var i = 0; i < clientList93.length; i++) {
+    if (area[i][0] === "Orem" && obs1Complete[i][0] === false) {
+
+      // Email template to recipients
+      var message = {
+        to: "admin@alliessupportedemployment.com" + "," + OremADEmail + "," + ADsupEmail, 
+        subject: "Pending 93 for " + clientList93[i][0],
+        body: "Hello "+ OremAD + " & " + ADsup + "," + "\n\nThis is an email reminder that it is the 15th of the month and " + clientList93[i][0] +" still has observation 1 for their 93 pending.\n\nPlease complete as soon as possible. ",
+        name: "ASE Management Team",
+        // attachments: [SpreadsheetApp.getActiveSpreadsheet().getAs(MimeType.PDF).setName("Monthly Form 93 Dashboard Overview " + ClientName + Month + "-" + Day + "-" + Year + ".pdf")],
+      };
+
+      MailApp.sendEmail(message);
+    }
+  }
+
+  // Loop through the data and send email for clients in Spanish Fork area with obs1Complete set to false
+  for (var i = 0; i < clientList93.length; i++) {
+    if (area[i][0] === "Spanish Fork" && obs1Complete[i][0] === false) {
+
+      // Email template to recipients
+      var message = {
+        to: "admin@alliessupportedemployment.com" + "," + OremADEmail + "," + ADsupEmail, 
+        subject: "Pending 93 for " + clientList93[i][0],
+        body: "Hello "+ OremAD + " & " + ADsup + "," + "\n\nThis is an email reminder that it is the 15th of the month and " + clientList93[i][0] +" still has observation 1 for their 93 pending.\n\nPlease complete as soon as possible. ",
+        name: "ASE Management Team",
+        // attachments: [SpreadsheetApp.getActiveSpreadsheet().getAs(MimeType.PDF).setName("Monthly Form 93 Dashboard Overview " + ClientName + Month + "-" + Day + "-" + Year + ".pdf")],
+      };
+
+      MailApp.sendEmail(message);
+    }
+  }
+
+}
