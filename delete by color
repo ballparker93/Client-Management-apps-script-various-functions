@@ -1,0 +1,19 @@
+function deleteValuesByColor() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Referrals to Contact");
+  var range = sheet.getDataRange();
+  var values = range.getValues();
+  var colors = range.getBackgrounds();
+
+  for (var i = 0; i < values.length; i++) {
+    for (var j = 0; j < values[i].length; j++) {
+      if (colors[i][j] == "#ea4335") { // replace with the color you want to delete
+        sheet.getRange(i + 1, j + 1).setValue("");
+      }
+    }
+  }
+
+  sheet.getRange('A2:G100').activate();
+  sheet.getActiveRange().sort({column: 1, ascending: true});
+
+
+};
