@@ -1,0 +1,126 @@
+function Email93Data() {
+
+  var dashboard = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Dashboard");
+  var progressReportData = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Data for Progress Report");
+  var pivotTable = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Pivot Table");
+  var progressReport = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Progress Report");
+  var goals = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Goals");
+  var referralsToContact = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Referrals to Contact");
+  var wsaToContact = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("WSA's in Progress");
+  var wsaNeedAuth = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("WSA Submitted, No Additional Auth");
+  var clientGoals = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Client Goals");
+  var requestedAuths = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Requested Auths");
+  var pendingCIE = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Pending CIE's");
+  var pending92 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Pending 92's");
+  var pendingJC93 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Pending JC 93's");
+  var pendingLS93 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Pending LS/DSPD 93's");
+  var caseClosures = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Case Closures/HQI");
+
+  var allSheets = [progressReport, progressReportData, pivotTable, goals, referralsToContact, wsaNeedAuth, wsaToContact, clientGoals, requestedAuths, pending92, pendingCIE, pendingJC93, pendingLS93, caseClosures]
+
+  //Variables being taken from the sheet to create email format
+
+  var row = 3;
+  var col = 2;
+  var ClientName = dashboard.getRange(row, col).getValue();
+
+  var row1 = 3;
+  var col1 = 7;
+  var RequestType = dashboard.getRange(row1, col1).getValue();
+
+  var row2 = 11;
+  var col2 = 3;
+  var RequestedHours = dashboard.getRange(row2, col2).getValue();
+
+  var row3 = 7;
+  var col3 = 2;
+  var EmailSummary = dashboard.getRange(row3, col3).getValue();
+
+  var row4 = 19;
+  var col4 = 4;
+  var UserEmail = dashboard.getRange(row4, col4).getValue();
+
+  var row5 = 21;
+  var col5 = 4;
+  var SupEmail = dashboard.getRange(row5, col5).getValue();
+
+  var row6 = 23;
+  var col6 = 4;
+  var RecipientsEmail = dashboard.getRange(row6, col6).getValue();
+
+  var row7 = 1;
+  var col7 = 16;
+  var Month = dashboard.getRange(row7, col7).getValue();
+
+  var row8 = 1;
+  var col8 = 17;
+  var Day = dashboard.getRange(row8, col8).getValue();
+ 
+  var row9 = 1;
+  var col9 = 18;
+  var Year = dashboard.getRange(row9, col9).getValue();
+
+
+  for (var i = 0; i < allSheets.length; i++) {
+    allSheets[i].hideSheet();
+  }
+
+  dashboard.getRange('1:25').activate();
+  dashboard.hideRows(dashboard.getActiveRange().getRow(), dashboard.getActiveRange().getNumRows());
+  dashboard.getRange('26:26').activate();
+  dashboard.getRange('X:Z').activate();
+  dashboard.setCurrentCell(dashboard.getRange('X26'));
+  dashboard.hideColumns(dashboard.getActiveRange().getColumn(), dashboard.getActiveRange().getNumColumns());
+  dashboard.getRange('AA:AA').activate();
+  var images = dashboard.getImages();
+  var image = images[0];
+  image.setAnchorCell(dashboard.getRange('W26'))
+  .setAnchorCellXOffset(4)
+  .setAnchorCellYOffset(0);
+  dashboard.getRange('U31').activate();
+
+  //Email template to recipients
+
+  var message = {
+  to: RecipientsEmail + "," + UserEmail + "," + SupEmail, 
+  subject: "93 Data Summary " + RequestType + " " + ClientName + " as of "+ Month +"/" + Day + "/" + Year,
+  body: "Hello, \n\nThe following is a summary of JC 93 data for " + ClientName + ".\n\nPlease reach out if you have any questions or concerns. Thank you for all that you do for our mutual clients.",
+  name: "ASE Management Team",
+  attachments: [SpreadsheetApp.getActiveSpreadsheet().getAs(MimeType.PDF).setName("Monthly Form 93 Dashboard Overview " + ClientName + " " + Month + "-" + Day + "-" + Year + ".pdf")],
+  }
+  
+  MailApp.sendEmail(message);
+
+  dashboard.getRange('AA:AA').activate();
+  dashboard.setCurrentCell(dashboard.getRange('AA26'));
+  dashboard.showColumns(23, 3);
+  dashboard.getRange('26:26').activate();
+  dashboard.showRows(1, 25);
+  var images = dashboard.getImages();
+  var image = images[0];
+
+  images = dashboard.getImages();
+  image = images[0];
+  image.setAnchorCell(dashboard.getRange('N2'))
+  .setAnchorCellXOffset(15)
+  .setAnchorCellYOffset(12);
+  dashboard.getRange('B3:E4').activate();
+  dashboard.getActiveRangeList().clear({contentsOnly: true, skipFilteredRows: true});
+  dashboard.getRange('D19:I19').activate();
+  dashboard.getActiveRangeList().clear({contentsOnly: true, skipFilteredRows: true});
+  dashboard.getRange('D21:I21').activate();
+  dashboard.getActiveRangeList().clear({contentsOnly: true, skipFilteredRows: true});
+  dashboard.getRange('D23:I23').activate();
+  dashboard.getActiveRangeList().clear({contentsOnly: true, skipFilteredRows: true});
+
+  dashboard.getRange('Z:AA').activate();
+  dashboard.showColumns(26, 1);
+
+  for (var i = 0; i < allSheets.length; i++) {
+    allSheets[i].showSheet();
+  }
+
+  dashboard.getRange('B3').activate();
+
+
+}
